@@ -7,7 +7,7 @@ Ported to javascript by Philippe Rivière, from the C++ implementation found at 
 
 Added an epsilon to avoid infinite loops caused by rounding errors.
 
-The algorithm runs in `O(n^2)`. It is better run in a javascript worker, as in the following example:
+The algorithm runs in `O(n^2)`. You can run it [directly](http://bl.ocks.org/Fil/6ead5eea43ec506d5550f095edc45e3f) or as a javascript worker, as in the following example:
 
 [![](https://gist.githubusercontent.com/Fil/d9752d8c41cc2cc176096ce475233966/raw/88c1e7e4d62df8145a68808b7252cd5013e0394f/thumbnail.png)](http://bl.ocks.org/Fil/d9752d8c41cc2cc176096ce475233966)
 

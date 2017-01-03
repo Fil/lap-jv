@@ -17,8 +17,9 @@ First, compute the cost matrix: how expensive it is to assign agent _i_ (rows) t
 The LAP-JV algorithm will give an optimal solution:
 
 ```javascript
-  const n = 3, costs = [[1,2,3], [4,2,1], [2,2,2]];
-  const solution = lap(n, costs);
+  n = 3, costs = [[1,2,3], [4,2,1], [2,2,2]];
+  //               ^ _ _    _ _ ^    _ ^ _
+  solution = lap(n, costs);
 
   console.log(solution.col);
   // [0, 2, 1]

@@ -1,6 +1,8 @@
 ## LAP-JV
 ### Linear Assignment Problem — algorithm by R. Jonker and A. Volgenant
 
+“A shortest augmenting path algorithm for dense and sparse linear assignment problems,” by R. Jonker and A. Volgenant, _Computing_ (1987) 38: 325. doi:10.1007/BF02278710
+ 
 Ported to javascript by Philippe Rivière, from the C++ implementation found at https://github.com/yongyanghz/LAPJV-algorithm-c
 
 Added an epsilon to avoid infinite loops caused by rounding errors.

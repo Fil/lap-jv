@@ -34,8 +34,8 @@ Here agent 0 is assigned to task 0, agent 1 to task 2, agent 2 to task 1, result
 
 For performance and usability reasons, the `lap` function now accepts a cost callback `cost(i,j)` instead of a cost matrix:
 ```javascript
-   var pos = new Float32Array(1000).map(d => Math.random());
-   lap(pos.length, (i,j) => (pos[i]*10 - j) * (pos[i]*10 - j));
+   var pos = new Float32Array(1000).map(d => Math.random() * 1000);
+   lap(pos.length, (i,j) => (pos[i] - j) * (pos[i] - j));
 ```
 
 ## 

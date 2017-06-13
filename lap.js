@@ -25,11 +25,11 @@
 *************************************************************************/
 
 /* This function is the jv shortest augmenting path algorithm to solve the assignment problem */
-function lap(dim, assigncost) {
+function lap(dim, cost) {
 
 // input:
 // dim        - problem size
-// assigncost - cost matrix
+// cost       - cost callback (or matrix)
 
 // output:
 // rowsol     - column assigned to row in solution
@@ -37,7 +37,22 @@ function lap(dim, assigncost) {
 // u          - dual variables, row reduction numbers
 // v          - dual variables, column reduction numbers
 
-    const sum = assigncost.map(d => d.reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0);
+    // convert the cost matrix (old API) to a callback (new API) 
+    if (typeof cost === 'object') {
+       var cost_matrix = cost;
+       cost = function(i,j) {
+          return cost_matrix[i][j];
+       }
+    }
+    
+    var sum = 0;
+    {
+       let i1, j1;
+       for (i1 = 0; i1 < dim; i1++) {
+         for (j1 = 0; j1 < dim; j1++)
+            sum += cost(i1,j1);
+       }
+    }
     const BIG = 10000 * (sum / dim);
     const epsilon = (sum / dim) / 10000;
     const rowsol = new Int32Array(dim),
@@ -67,11 +82,11 @@ function lap(dim, assigncost) {
     for (j = dim; j--;) // reverse order gives better results.
     {
         // find minimum cost over rows.
-        min = assigncost[0][j];
+        min = cost(0,j);
         imin = 0;
         for (i = 1; i < dim; i++)
-            if (assigncost[i][j] < min) {
-                min = assigncost[i][j];
+            if (cost(i,j) < min) {
+                min = cost(i,j);
                 imin = i;
             }
         v[j] = min;
@@ -89,7 +104,7 @@ function lap(dim, assigncost) {
     }
 
     // REDUCTION TRANSFER
-    for (i = 0; i < dim; i++)
+    for (i = 0; i < dim; i++) {
         if (matches[i] == 0) // fill list of unassigned 'free' rows.
             free[numfree++] = i;
         else
@@ -99,9 +114,10 @@ function lap(dim, assigncost) {
         min = BIG;
         for (j = 0; j < dim; j++)
             if (j != j1)
-                if (assigncost[i][j] - v[j] < min + epsilon)
-                    min = assigncost[i][j] - v[j];
+                if (cost(i,j) - v[j] < min + epsilon)
+                    min = cost(i,j) - v[j];
         v[j1] = v[j1] - min;
+    }
     }
 
     // AUGMENTING ROW REDUCTION
@@ -119,11 +135,11 @@ function lap(dim, assigncost) {
             k++;
 
             // find minimum and second minimum reduced cost over columns.
-            umin = assigncost[i][0] - v[0];
+            umin = cost(i,0) - v[0];
             j1 = 0;
             usubmin = BIG;
             for (j = 1; j < dim; j++) {
-                h = assigncost[i][j] - v[j];
+                h = cost(i,j) - v[j];
                 if (h < usubmin)
                     if (h >= umin) {
                         usubmin = h;
@@ -173,7 +189,7 @@ function lap(dim, assigncost) {
         // Dijkstra shortest path algorithm.
         // runs until unassigned column added to shortest path tree.
         for (j = dim; j--;) {
-            d[j] = assigncost[freerow][j] - v[j];
+            d[j] = cost(freerow,j) - v[j];
             pred[j] = freerow;
             collist[j] = j; // init column list.
         }
@@ -220,11 +236,11 @@ function lap(dim, assigncost) {
                 j1 = collist[low];
                 low++;
                 i = colsol[j1];
-                h = assigncost[i][j1] - v[j1] - min;
+                h = cost(i,j1) - v[j1] - min;
 
                 for (k = up; k < dim; k++) {
                     j = collist[k];
-                    v2 = assigncost[i][j] - v[j] - h;
+                    v2 = cost(i,j) - v[j] - h;
                     if (v2 < d[j]) {
                         pred[j] = i;
                         if (v2 == min) // new column found at same minimum value
@@ -267,8 +283,8 @@ function lap(dim, assigncost) {
     let lapcost = 0;
     for (i = dim; i--;) {
         j = rowsol[i];
-        u[i] = assigncost[i][j] - v[j];
-        lapcost = lapcost + assigncost[i][j];
+        u[i] = cost(i,j) - v[j];
+        lapcost = lapcost + cost(i,j);
     }
 
     return {

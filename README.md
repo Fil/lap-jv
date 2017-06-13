@@ -29,6 +29,15 @@ The LAP-JV algorithm will give an optimal solution:
 
 Here agent 0 is assigned to task 0, agent 1 to task 2, agent 2 to task 1, resulting in a total cost of `1 + 1 + 2 = 4`.
 
+
+**Cost callback**
+
+For performance and usability reasons, the `lap` function now accepts a cost callback `cost(i,j)` instead of a cost matrix:
+```javascript
+   var pos = new Float32Array(1000).map(d => Math.random());
+   lap(pos.length, (i,j) => (pos[i]*10 - j) * (pos[i]*10 - j));
+```
+
 ## 
 
 The algorithm runs in `O(n^2)`. You can run it [directly](http://bl.ocks.org/Fil/6ead5eea43ec506d5550f095edc45e3f) or as a javascript worker, as in the following example:

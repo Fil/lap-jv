@@ -42,7 +42,7 @@ For performance and usability reasons, the `lap` function now accepts a cost cal
 
 The algorithm runs in `O(n^2)`. You can run it [directly](http://bl.ocks.org/Fil/6ead5eea43ec506d5550f095edc45e3f) or as a javascript worker, as in the following example:
 
-[![](https://gist.githubusercontent.com/Fil/d9752d8c41cc2cc176096ce475233966/raw/88c1e7e4d62df8145a68808b7252cd5013e0394f/thumbnail.png)](http://bl.ocks.org/Fil/d9752d8c41cc2cc176096ce475233966)
+[![](https://gist.githubusercontent.com/Fil/d9752d8c41cc2cc176096ce475233966/raw/88c1e7e4d62df8145a68808b7252cd5013e0394f/thumbnail.png)](https://observablehq.observablehq.cloud/pangea/varia/lap-jv)
 
 In the example above, we assign _n_ points to a grid of _n_ positions. `costs[i][j]` is the square distance between point _i_'s original coordinates and position _j_'s coordinates. The algorithm minimizes the total cost, i.e. the sum of square displacements.
 
